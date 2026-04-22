@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stephanie Zhou — Product Designer</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+
+  body { padding-top: var(--nav-offset); }
+
+  /* ── HERO ── */
+  .hero {
+    padding: var(--space-xl) var(--space-lg) 0;
+    text-align: left;
+    max-width: 760px;
+    margin: 0;
+  }
+  .hero-headline {
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 400;
+    line-height: 1.25;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    margin-bottom: var(--space-md);
+  }
+  .hero-location {
+    font-size: 16px;
+    color: var(--ink-muted);
+    line-height: 1.7;
+    max-width: 560px;
+    margin: 0;
+  }
+
+  /* ── PROJECTS SCROLL STAGE ── */
+  .projects-stage {
+    margin-top: var(--space-xl);
+    position: relative;
+  }
+
+  /* scrollable track */
+  .projects-track-wrap {
+    overflow-x: auto;
+    overflow-y: visible;
+    padding: 20px var(--space-lg) var(--space-lg);
+    cursor: grab;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    touch-action: pan-x;
+  }
+  .projects-track-wrap::-webkit-scrollbar { display: none; }
+  .projects-track-wrap:active { cursor: grabbing; }
+
+  .projects-track {
+    display: flex;
+    gap: 80px;
+    align-items: flex-end;
+    width: max-content;
+    padding-bottom: 0;
+  }
+
+  /* ── MACBOOK SLIDESHOW ── */
+  .macbook-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 2392 / 1507;
+  }
+  .macbook-screen {
+    position: absolute;
+    left: 8.74%; top: 5.64%;
+    width: 81.02%; height: 80.43%;
+    overflow: hidden;
+    border-radius: 2px;
+    background: #111;
+  }
+  .screen-slide {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.9s ease;
+  }
+  .screen-slide.active { opacity: 1; }
+  .macbook-frame {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    display: block;
+  }
+
+  /* ── DEVICE CARD ── */
+  .device-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-sm);
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    flex-shrink: 0;
+  }
+  .device-label {
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--ink);
+    white-space: nowrap;
+    text-align: center;
+    transition: color 0.2s;
+  }
+  .device-card:hover .device-label { color: var(--pond); }
+
+  /* phone vs laptop sizing */
+  .device-phone { width: 120px; }
+  .device-laptop { width: 383px; }
+
+  .device-phone svg,
+  .device-phone img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .device-phone svg,
+  .device-phone img,
+  .device-laptop .macbook-wrap {
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    filter: drop-shadow(0 12px 32px rgba(44,40,32,0.10));
+    transform-origin: bottom center;
+  }
+  .device-card:hover .device-phone svg,
+  .device-card:hover .device-phone img,
+  .device-card:hover .device-laptop .macbook-wrap {
+    transform: scale(1.05);
+    filter: drop-shadow(0 20px 40px rgba(44,40,32,0.16));
+  }
+
+  /* label area — fixed height so all mockups bottom-align */
+  .device-label-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    height: 72px;
+    justify-content: flex-start;
+    padding-top: 12px;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    border-top: var(--border-hair);
+    padding: var(--space-md) var(--space-lg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-copy {
+    font-size: 12px;
+    color: var(--ink-faint);
+  }
+  .footer-links {
+    display: flex;
+    gap: 24px;
+  }
+  .footer-links a {
+    font-size: 11px;
+    color: var(--ink-faint);
+    text-decoration: none;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--ink); }
+
+  /* ── SWIPE HINT ── */
+  .swipe-hint {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    padding: var(--space-sm) 24px 0;
+    font-size: 11px;
+    color: var(--ink-faint);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    animation: hint-fade 2.4s ease forwards;
+    animation-delay: 0.8s;
+    opacity: 0;
+    justify-content: flex-start;
+  }
+  .swipe-hint svg {
+    flex-shrink: 0;
+    opacity: 0.5;
+  }
+  @keyframes hint-fade {
+    0%   { opacity: 0; transform: translateX(0); }
+    20%  { opacity: 1; transform: translateX(4px); }
+    60%  { opacity: 1; transform: translateX(4px); }
+    100% { opacity: 0; transform: translateX(8px); }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 700px) {
+    .hero { padding: 48px 24px 0; }
+    .swipe-hint { display: flex; }
+    .projects-track-wrap { padding: 32px 24px 40px; }
+    .footer { flex-direction: column; gap: var(--space-sm); padding: 28px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-brand">Stephanie Zhou</a>
+  <button class="hamburger" aria-label="Open menu" aria-expanded="false" id="burger">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- OVERLAY MENU -->
+<div class="nav-overlay" id="nav-overlay" aria-hidden="true">
+  <div class="overlay-links">
+    <button class="overlay-link overlay-link--parent" id="work-toggle" aria-expanded="false">
+      <span class="overlay-link-name">Work</span>
+      <span class="overlay-expand">→</span>
+    </button>
+    <div class="overlay-sub-links" id="work-sub">
+      <a href="figma-timeline.html" class="overlay-link overlay-link--child">
+        <span class="overlay-link-name">Figma</span>
+        <span class="overlay-arrow">→</span>
+      </a>
+      <a href="case-study-museum-diary.html" class="overlay-link overlay-link--child">
+        <span class="overlay-link-name">Museum Diary</span>
+        <span class="overlay-arrow">→</span>
+      </a>
+    </div>
+    <!-- <a href="#" class="overlay-link">
+      <span class="overlay-link-name">About</span>
+      <span class="overlay-arrow">→</span>
+    </a> -->
+  </div>
+  <div class="overlay-contact">
+    <div class="overlay-contact-group">
+      <span class="overlay-contact-label">Email</span>
+      <a href="mailto:stephanielanzhou@gmail.com">stephanielanzhou@gmail.com</a>
+    </div>
+    <div class="overlay-contact-group">
+      <span class="overlay-contact-label">LinkedIn</span>
+      <a href="https://www.linkedin.com/in/stephanielanzhou/">linkedin.com/in/stephanielanzhou</a>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <h1 class="hero-headline">Steph is a product designer focused on elevating an ethos of social responsibility in the tech sphere</h1>
+  <p class="hero-location">currently a product design educator at Figma, based in San Jose, California.</p>
+</section>
+
+<!-- SWIPE HINT (mobile only) -->
+<div class="swipe-hint" aria-hidden="true">
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+    <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  swipe to explore
+</div>
+
+<!-- PROJECTS SCROLL -->
+<div class="projects-stage">
+<div class="projects-track-wrap" id="track-wrap">
+    <div class="projects-track" id="track">
+
+      <!-- Figma — MacBook -->
+      <a href="figma-timeline.html" class="device-card">
+        <div class="device-laptop">
+          <div class="macbook-wrap">
+            <div class="macbook-screen">
+              <img class="screen-slide active" src="Figma/figbuild promo.png" alt="">
+              <img class="screen-slide" src="Figma/config installation video.PNG" alt="">
+              <img class="screen-slide" src="Figma/june 2025 panel.jpg" alt="">
+              <img class="screen-slide" src="Figma/michigan road show sept 20251.PNG" alt="">
+              <img class="screen-slide" src="Figma/speaking photo.png" alt="">
+              <img class="screen-slide" src="Figma/washington road show1.JPG" alt="">
+              <img class="screen-slide" src="Figma/times square 2024 sept2.JPG" alt="">
+            </div>
+            <img class="macbook-frame" src="mockups/macbook.svg" alt="">
+          </div>
+        </div>
+        <div class="device-label-area">
+          <span class="device-label">Figma</span>
+        </div>
+      </a>
+
+      <!-- Museum Diary — phone -->
+      <a href="case-study-museum-diary.html" class="device-card">
+        <div class="device-phone">
+          <svg viewBox="0 0 160 347" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <clipPath id="museum-screen-clip">
+                <rect x="4" y="5" width="152" height="337" rx="23"/>
+              </clipPath>
+            </defs>
+            <!-- Screenshot fills the screen area -->
+            <image href="museum diary/hero.png" x="4" y="5" width="152" height="337" clip-path="url(#museum-screen-clip)" preserveAspectRatio="xMidYMid slice"/>
+            <!-- Phone body frame (even-odd punches out screen) -->
+            <path fill-rule="evenodd" fill="#F5F2EE"
+              d="M27,0 H133 Q160,0 160,27 V320 Q160,347 133,347 H27 Q0,347 0,320 V27 Q0,0 27,0 Z
+                 M4,5 H156 V342 H4 Z"/>
+            <path fill="none" stroke="#D8D3CB" stroke-width="1.5"
+              d="M27,0.75 H133 Q159.25,0.75 159.25,27 V320 Q159.25,346.25 133,346.25 H27 Q0.75,346.25 0.75,320 V27 Q0.75,0.75 27,0.75 Z"/>
+            <!-- Dynamic island -->
+            <rect x="53" y="10" width="54" height="13" rx="6.5" fill="#F0EDE8"/>
+            <!-- Side buttons -->
+            <rect x="158" y="108" width="3" height="44" rx="1.5" fill="#D8D3CB"/>
+            <rect x="-1" y="78" width="3" height="18" rx="1.5" fill="#D8D3CB"/>
+            <rect x="-1" y="108" width="3" height="30" rx="1.5" fill="#D8D3CB"/>
+            <rect x="-1" y="144" width="3" height="30" rx="1.5" fill="#D8D3CB"/>
+          </svg>
+        </div>
+        <div class="device-label-area">
+          <span class="device-label">Museum Diary</span>
+        </div>
+      </a>
+
+      <!-- Aagain — phone (coming soon) -->
+      <div class="device-card" style="cursor:default;">
+        <div class="device-phone">
+          <svg viewBox="0 0 160 347" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <clipPath id="screen-clip">
+                <rect x="4" y="5" width="152" height="337" rx="23"/>
+              </clipPath>
+            </defs>
+            <!-- Screenshot fills the screen area -->
+            <image href="aagain/IMG_1395.PNG" x="4" y="5" width="152" height="337" clip-path="url(#screen-clip)" preserveAspectRatio="xMidYMid slice"/>
+            <!-- Phone body frame (even-odd cuts out screen so image shows through) -->
+            <path fill-rule="evenodd" fill="#F5F2EE"
+              d="M27,0 H133 Q160,0 160,27 V320 Q160,347 133,347 H27 Q0,347 0,320 V27 Q0,0 27,0 Z
+                 M4,5 H156 Q156,5 156,5 V342 H4 Z"/>
+            <path fill="none" stroke="#D8D3CB" stroke-width="1.5"
+              d="M27,0.75 H133 Q159.25,0.75 159.25,27 V320 Q159.25,346.25 133,346.25 H27 Q0.75,346.25 0.75,320 V27 Q0.75,0.75 27,0.75 Z"/>
+            <!-- Dynamic island -->
+            <rect x="53" y="10" width="54" height="13" rx="6.5" fill="#1a1a1a" opacity="0.6"/>
+            <!-- Side buttons -->
+            <rect x="158" y="108" width="3" height="44" rx="1.5" fill="#D8D3CB"/>
+            <rect x="-1" y="78" width="3" height="18" rx="1.5" fill="#D8D3CB"/>
+            <rect x="-1" y="108" width="3" height="30" rx="1.5" fill="#D8D3CB"/>
+            <rect x="-1" y="144" width="3" height="30" rx="1.5" fill="#D8D3CB"/>
+          </svg>
+        </div>
+        <div class="device-label-area">
+          <span class="device-label">Aagain</span>
+          <span style="font-size:11px;color:var(--ink-faint);letter-spacing:0.08em;text-transform:uppercase;">Coming Soon</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <span class="footer-copy">Stephanie Zhou &mdash; 2026</span>
+  <div class="footer-links">
+    <a href="https://www.linkedin.com/in/stephanielanzhou/">LinkedIn</a>
+    <a href="mailto:stephanielanzhou@gmail.com">Email</a>
+  </div>
+</footer>
+
+<script>
+  /* hamburger + overlay */
+  const burger  = document.getElementById('burger');
+  const overlay = document.getElementById('nav-overlay');
+  burger.addEventListener('click', () => {
+    const isOpen = burger.getAttribute('aria-expanded') === 'true';
+    burger.setAttribute('aria-expanded', String(!isOpen));
+    overlay.classList.toggle('open', !isOpen);
+    overlay.setAttribute('aria-hidden', String(isOpen));
+    document.body.style.overflow = isOpen ? '' : 'hidden';
+  });
+  const workToggle = document.getElementById('work-toggle');
+  const workSub    = document.getElementById('work-sub');
+  workToggle.addEventListener('click', () => {
+    const expanded = workToggle.getAttribute('aria-expanded') === 'true';
+    workToggle.setAttribute('aria-expanded', String(!expanded));
+    workToggle.classList.toggle('expanded', !expanded);
+    workSub.classList.toggle('open', !expanded);
+  });
+  overlay.querySelectorAll('a.overlay-link').forEach(link => {
+    link.addEventListener('click', () => {
+      burger.setAttribute('aria-expanded', 'false');
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    });
+  });
+
+  /* macbook slideshow */
+  const slides = document.querySelectorAll('.screen-slide');
+  let slideIdx = 0;
+  setInterval(() => {
+    slides[slideIdx].classList.remove('active');
+    slideIdx = (slideIdx + 1) % slides.length;
+    slides[slideIdx].classList.add('active');
+  }, 1125);
+
+  /* drag-to-scroll */
+  const wrap = document.getElementById('track-wrap');
+  let isDown = false, startX, scrollLeft;
+  wrap.addEventListener('mousedown', e => {
+    isDown = true;
+    wrap.style.cursor = 'grabbing';
+    startX = e.pageX - wrap.offsetLeft;
+    scrollLeft = wrap.scrollLeft;
+  });
+  wrap.addEventListener('mouseleave', () => { isDown = false; wrap.style.cursor = 'grab'; });
+  wrap.addEventListener('mouseup',    () => { isDown = false; wrap.style.cursor = 'grab'; });
+  wrap.addEventListener('mousemove', e => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - wrap.offsetLeft;
+    wrap.scrollLeft = scrollLeft - (x - startX) * 1.2;
+  });
+</script>
+</body>
+</html>
