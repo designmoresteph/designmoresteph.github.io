@@ -22,7 +22,7 @@
   .cs-body p:last-child { margin-bottom: 0; }
 
   /* ── SECTIONS ── */
-  .cs-section { margin-bottom: 72px; }
+  .cs-section { margin-bottom: 72px; scroll-margin-top: 90px; }
   .cs-section-label {
     font-size: 11px;
     letter-spacing: 0.14em;
@@ -184,13 +184,22 @@
   .cs-sub-title { font-size: 13px; font-weight: 400; color: var(--ink); margin: 0; }
   .cs-sub-body { font-size: 14px; color: var(--ink-muted); line-height: 1.7; margin: 0; }
 
-  /* sub with inline video: third column on desktop */
-  .cs-sub--with-video { grid-template-columns: 180px 1fr 200px; }
+  /* sub with inline video: video left, text right */
+  .cs-sub--with-video { grid-template-columns: 160px 1fr; }
+  .cs-sub-text { display: flex; flex-direction: column; gap: 6px; }
   .cs-sub-video {
     background: #111; border-radius: 10px; overflow: hidden;
     aspect-ratio: 9/16; align-self: start;
   }
   .cs-sub-video video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  /* ── TOC (active dot) ── */
+  .toc-list a { display: flex; align-items: center; gap: 8px; }
+  .toc-list a::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: transparent; flex-shrink: 0; transition: background 0.2s; }
+  .toc-list a.active::before { background: var(--ink); }
+
+  /* ── NEXT PROJECT ── */
+  .next-project-link { justify-content: flex-end; gap: 20px; }
 
   /* ── RESPONSIVE ── */
   @media (min-width: 768px) and (max-width: 1024px) {
@@ -209,7 +218,7 @@
     .cs-specs { grid-template-columns: 1fr; }
     .cs-sub { grid-template-columns: 1fr; gap: 8px; }
     .cs-sub--with-video { grid-template-columns: 1fr; }
-    .cs-sub-video { max-width: 260px; }
+    .cs-sub-video { max-width: 200px; }
     footer { padding: 20px 24px; gap: 20px; flex-wrap: wrap; }
     .cs-section-heading { font-size: 26px; }
     .cs-hook p { font-size: 14px; }
@@ -310,7 +319,7 @@
   </div>
 
   <!-- 2. PROBLEM FRAMING -->
-  <div class="cs-section fade-up">
+  <div class="cs-section fade-up" id="s-problem">
     <h2 class="cs-section-heading">Problem Framing</h2>
     <div class="cs-body">
       <p>Museum visits are oddly ephemeral for something so intentional. You photograph the art, photograph the placard, then spend the next three weeks with 200 unlabeled images in your camera roll. No titles, no artists, no context. What you actually saw collapses into a vague warm feeling.</p>
@@ -334,7 +343,7 @@
   <hr class="cs-divider">
 
   <!-- 4. SUB-CONCEPT BREAKDOWNS -->
-  <div class="cs-section fade-up" data-bg="#ECEEF6">
+  <div class="cs-section fade-up" id="s-capture" data-bg="#ECEEF6">
     <h2 class="cs-section-heading">Capture</h2>
     <div class="cs-subs">
       <div class="cs-sub">
@@ -342,72 +351,86 @@
         <p class="cs-sub-body">Artwork first, placard second. The camera knows which is which. After the placard shot, Apple's Vision framework reads the text on-device and fills in title, artist, date, and medium automatically. Done in under ten seconds.</p>
       </div>
       <div class="cs-sub cs-sub--with-video">
-        <p class="cs-sub-title">Real-time text detection</p>
-        <p class="cs-sub-body">While you're framing the placard, green boxes appear over detected text in the viewfinder — OCR you can see working, not a black box that fires after you've already moved on.</p>
         <div class="cs-sub-video">
           <video muted loop playsinline>
             <source src="museum diary/real-time-placard-scanning.MOV" type="video/mp4">
           </video>
         </div>
+        <div class="cs-sub-text">
+          <p class="cs-sub-title">Real-time text detection</p>
+          <p class="cs-sub-body">While you're framing the placard, green boxes appear over detected text in the viewfinder — OCR you can see working, not a black box that fires after you've already moved on.</p>
+        </div>
       </div>
       <div class="cs-sub cs-sub--with-video">
-        <p class="cs-sub-title">Background cleanup on the artwork shot</p>
-        <p class="cs-sub-body">Gallery photos are never clean. An elbow crosses the frame, a neighboring piece edges in, the floor catches light. What lands in your collection is the piece itself, not the room around it.</p>
         <div class="cs-sub-video">
           <video muted loop playsinline>
             <source src="museum diary/photo-background-removal.mov" type="video/mp4">
           </video>
         </div>
+        <div class="cs-sub-text">
+          <p class="cs-sub-title">Background cleanup on the artwork shot</p>
+          <p class="cs-sub-body">Gallery photos are never clean. An elbow crosses the frame, a neighboring piece edges in, the floor catches light. What lands in your collection is the piece itself, not the room around it.</p>
+        </div>
       </div>
       <div class="cs-sub cs-sub--with-video">
-        <p class="cs-sub-title">Location-aware logging</p>
-        <p class="cs-sub-body">The app detects which museum you're in. The artwork tags itself to the right visit, city, and trip — not you.</p>
         <div class="cs-sub-video">
           <video muted loop playsinline>
             <source src="museum diary/location-detection.MOV" type="video/mp4">
           </video>
         </div>
+        <div class="cs-sub-text">
+          <p class="cs-sub-title">Location-aware logging</p>
+          <p class="cs-sub-body">The app detects which museum you're in. The artwork tags itself to the right visit, city, and trip — not you.</p>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="cs-section fade-up">
+  <div class="cs-section fade-up" id="s-remember">
     <h2 class="cs-section-heading">Remember</h2>
     <div class="cs-subs">
       <div class="cs-sub cs-sub--with-video">
-        <p class="cs-sub-title">The gallery, sorted by time</p>
-        <p class="cs-sub-body">Your collection reads as a timeline — newest visits at the top, grouped by day and museum. Every afternoon you spent in a gallery is still there, in order.</p>
         <div class="cs-sub-video">
           <video muted loop playsinline>
             <source src="museum diary/gallery-sorted-by-timeline.mov" type="video/mp4">
           </video>
         </div>
+        <div class="cs-sub-text">
+          <p class="cs-sub-title">The gallery, sorted by time</p>
+          <p class="cs-sub-body">Your collection reads as a timeline — newest visits at the top, grouped by day and museum. Every afternoon you spent in a gallery is still there, in order.</p>
+        </div>
       </div>
       <div class="cs-sub cs-sub--with-video">
-        <p class="cs-sub-title">The artwork view</p>
-        <p class="cs-sub-body">The placard sits bottom-right — where a real museum label would be, not in a tooltip. The information accompanies the art rather than interrupting it.</p>
         <div class="cs-sub-video">
           <video muted loop playsinline>
             <source src="museum diary/artwork-detail-placard-reveal.mov" type="video/mp4">
           </video>
         </div>
+        <div class="cs-sub-text">
+          <p class="cs-sub-title">The artwork view</p>
+          <p class="cs-sub-body">The placard sits bottom-right — where a real museum label would be, not in a tooltip. The information accompanies the art rather than interrupting it.</p>
+        </div>
       </div>
       <div class="cs-sub cs-sub--with-video">
-        <p class="cs-sub-title">Color extraction</p>
-        <p class="cs-sub-body">Every artwork gets a five-color palette pulled from the image. A small thing that makes the collection feel alive and makes your taste legible at a glance.</p>
         <div class="cs-sub-video">
           <video muted loop playsinline>
             <source src="museum diary/color-palette-extraction.MOV" type="video/mp4">
           </video>
         </div>
+        <div class="cs-sub-text">
+          <p class="cs-sub-title">Color extraction</p>
+          <p class="cs-sub-body">Every artwork gets a five-color palette pulled from the image. A small thing that makes the collection feel alive and makes your taste legible at a glance.</p>
+        </div>
       </div>
       <div class="cs-sub cs-sub--with-video">
-        <p class="cs-sub-title">The profile</p>
-        <p class="cs-sub-body">Total artworks, artists, centuries spanned, cities visited. Built to be the screen you actually want to share, not a dashboard you close.</p>
         <div class="cs-sub-video">
           <video muted loop playsinline>
             <source src="museum diary/profile-screen-ugc-display.MP4" type="video/mp4">
           </video>
+        </div>
+        <div class="cs-sub-text">
+          <p class="cs-sub-title">The profile</p>
+          <p class="cs-sub-body">Total artworks, artists, centuries spanned, cities visited. Built to be the screen you actually want to share, not a dashboard you close.</p>
         </div>
       </div>
     </div>
@@ -416,45 +439,42 @@
   <hr class="cs-divider">
 
   <!-- 6. DESIGN DETAILS -->
-  <div class="cs-section fade-up">
+  <div class="cs-section fade-up" id="s-details">
     <h2 class="cs-section-heading">Design Details</h2>
-
-    <div class="cs-subs">
-      <div class="cs-sub">
-        <p class="cs-sub-title">The placard is part of the image, not a tooltip</p>
-        <p class="cs-sub-body">In the artwork detail view, the placard overlay sits bottom-right against the full-bleed photo. Warm off-white, soft shadow — it mimics what you'd see standing in front of the real thing. The OCR logic runs three tiers: keyword detection first, then pattern matching, then positional heuristics. If it still fails, you get two retries before manual entry. The app never leaves you stuck.</p>
-      </div>
-      <div class="cs-sub">
-        <p class="cs-sub-title">Remove friction the user didn't know was there</p>
-        <p class="cs-sub-body">The camera detects your museum so you don't have to tag it. Background removal cleans the artwork photo so you don't have to crop it. The app does the boring work quietly. The user just sees that their collection looks good and is organized correctly.</p>
-      </div>
+    <div class="cs-body">
+      <p><strong>The placard is part of the image, not a tooltip.</strong> In the artwork detail view, the placard overlay sits bottom-right against the full-bleed photo. Warm off-white, soft shadow — it mimics what you'd see standing in front of the real thing. The OCR logic runs three tiers: keyword detection first, then pattern matching, then positional heuristics. If it still fails, you get two retries before manual entry. The app never leaves you stuck.</p>
+      <p><strong>Remove friction the user didn't know was there.</strong> The camera detects your museum so you don't have to tag it. Background removal cleans the artwork photo so you don't have to crop it. The app does the boring work quietly. The user just sees that their collection looks good and is organized correctly.</p>
     </div>
   </div>
 
   <hr class="cs-divider">
 
   <!-- 7. CLOSING REFLECTION -->
-  <div class="cs-section fade-up" data-bg="#F0EBE0">
+  <div class="cs-section fade-up" id="s-reflection" data-bg="#F0EBE0">
     <h2 class="cs-section-heading">Reflection</h2>
-    <div class="two-col">
-      <div class="cs-body">
-        <p>I started this because I kept losing the things I found in museums. Not the experience, but the specifics. The tiny details that make a piece yours: the medium, the exact date, the thing you noticed.</p>
-        <p>If it works, you leave a museum and your phone already knows what you saw. The visit becomes part of something instead of disappearing into a camera roll.</p>
-      </div>
-      <div class="cs-body">
-        <div class="cs-pullquote">
-          <p>"Not logging. Not organization. Keeping."</p>
-        </div>
-        <p>Building it taught me that the hardest part wasn't the OCR or the camera or the data model. It was figuring out what the app was actually for. Not logging. Not organization. Keeping.</p>
-        <p style="margin-top: 24px;"><strong>Database:</strong> 107,000+ museums worldwide, searchable, with the option to add your own.</p>
-        <p>What didn't make it (yet): An audio guide mode, a social layer for sharing collections, a museum wishlist trip planner with map integration, and a bench photo gallery (yes, just great museum benches).</p>
-        <p>Thanks to everyone who let me drag them to museums for "research."</p>
-      </div>
+    <div class="cs-body">
+      <p>I started this because I kept losing the things I found in museums. Not the experience, but the specifics. The tiny details that make a piece yours: the medium, the exact date, the thing you noticed.</p>
+      <p>Building it taught me that the hardest part wasn't the OCR or the camera or the data model. It was figuring out what the app was actually for. Not logging. Not organization. Keeping.</p>
+      <p>If it works, you leave a museum and your phone already knows what you saw. The visit becomes part of something instead of disappearing into a camera roll.</p>
+      <p><strong>Database:</strong> 107,000+ museums worldwide, searchable, with the option to add your own.</p>
+      <p>What didn't make it (yet): An audio guide mode, a social layer for sharing collections, a museum wishlist trip planner with map integration, and a bench photo gallery (yes, just great museum benches).</p>
+      <p>Thanks to everyone who let me drag them to museums for "research."</p>
     </div>
   </div>
 
 
 </div><!-- /cs-wrap -->
+
+<!-- ── TOC ── -->
+<aside class="toc" aria-label="Page contents">
+  <ul class="toc-list">
+    <li><a href="#s-problem">Problem</a></li>
+    <li><a href="#s-capture">Capture</a></li>
+    <li><a href="#s-remember">Remember</a></li>
+    <li><a href="#s-details">Details</a></li>
+    <li><a href="#s-reflection">Reflection</a></li>
+  </ul>
+</aside>
 
 <!-- NEXT PROJECT -->
 <section class="next-project fade-up">
@@ -465,10 +485,8 @@
   </a>
 </section>
 
-<footer>
-  <a href="index.html">Home</a>
-  <a href="figma-timeline.html">Work</a>
-  <!-- <a href="about.html">About</a> -->
+<footer class="site-footer">
+  <a href="mailto:stephanielanzhou@gmail.com" class="site-footer-name">Stephanie Zhou</a>
 </footer>
 
 <script>
@@ -556,6 +574,20 @@
     });
   }, { threshold: 0.4 });
   document.querySelectorAll('.cs-sub-video video, .cs-broll video').forEach(v => videoObserver.observe(v));
+
+  /* ── TOC active state ── */
+  const tocLinks = document.querySelectorAll('.toc-list a');
+  const tocTargets = document.querySelectorAll('.cs-section[id]');
+  const tocObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`.toc-list a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -60% 0px' });
+  tocTargets.forEach(el => tocObserver.observe(el));
 
   /* ── scroll-reveal ── */
   const revealObserver = new IntersectionObserver((entries) => {
