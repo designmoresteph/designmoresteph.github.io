@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Study — Steph D.</title><!-- TODO: update title before deploy -->
+<link rel="stylesheet" href="tokens.css">
+<style>
+  body { padding-top: 72px; }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="home.html" class="nav-brand">Stephanie Zhou</a>
+  <button class="hamburger" aria-label="Open menu" aria-expanded="false" id="burger">
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+
+<!-- ── OVERLAY MENU ── -->
+<div class="nav-overlay" id="nav-overlay" aria-hidden="true">
+  <div class="overlay-links">
+    <button class="overlay-link overlay-link--parent" id="work-toggle" aria-expanded="false">
+      <span class="overlay-link-name">Work</span>
+      <span class="overlay-expand">→</span>
+    </button>
+    <div class="overlay-sub-links" id="work-sub">
+      <a href="figma-timeline.html" class="overlay-link overlay-link--child">
+        <span class="overlay-link-name">Figma</span>
+        <span class="overlay-arrow">→</span>
+      </a>
+      <a href="case-study-museum-diary.html" class="overlay-link overlay-link--child">
+        <span class="overlay-link-name">Museum Diary</span>
+        <span class="overlay-arrow">→</span>
+      </a>
+    </div>
+    <!-- <a href="#" class="overlay-link">
+      <span class="overlay-link-name">About</span>
+      <span class="overlay-arrow">→</span>
+    </a> -->
+  </div>
+  <div class="overlay-contact">
+    <div class="overlay-contact-group">
+      <span class="overlay-contact-label">Email</span>
+      <a href="mailto:stephanielanzhou@gmail.com">stephanielanzhou@gmail.com</a>
+    </div>
+    <div class="overlay-contact-group">
+      <span class="overlay-contact-label">LinkedIn</span>
+      <a href="https://www.linkedin.com/in/stephanielanzhou/">linkedin.com/in/stephanielanzhou</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── WAVE PROGRESS BAR ── -->
+<div class="wave-progress" aria-hidden="true">
+  <svg id="wave-svg" preserveAspectRatio="none">
+    <defs>
+      <clipPath id="progress-clip">
+        <rect id="progress-rect" x="0" y="0" width="0" height="10"/>
+      </clipPath>
+    </defs>
+    <line id="track-line" x1="0" y1="5" x2="0" y2="5" stroke="rgba(0,0,0,0.08)" stroke-width="0.5"/>
+    <path id="wave-path" fill="none" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round" clip-path="url(#progress-clip)"/>
+  </svg>
+</div>
+
+<!-- ── HERO HEADER ── -->
+<header class="page-header">
+  <div></div>
+  <!-- TODO: update company/project name before deploy -->
+  <h1 class="page-hero-title">Company</h1>
+  <div class="page-meta-block">
+    <div class="page-meta-row">
+      <div class="page-meta-item">
+        <span class="page-meta-label">Role</span>
+        <!-- TODO: update role -->
+        <span class="page-meta-value">Your Role Here</span>
+      </div>
+      <div class="page-meta-divider"></div>
+      <div class="page-meta-item">
+        <span class="page-meta-label">Since</span>
+        <!-- TODO: update dates -->
+        <span class="page-meta-value">Year – Year</span>
+      </div>
+    </div>
+    <!-- TODO: update intro paragraph -->
+    <p class="page-meta-lede">Write your intro paragraph here. What did you do, why does it matter, what are you proud of?</p>
+    <div class="page-meta-row">
+      <div class="page-meta-item">
+        <span class="page-meta-label">Favorite Project</span>
+        <!-- TODO: update favorite project -->
+        <span class="page-meta-value">Project Name · Context</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ── CONTENT AREA ── -->
+<main class="cs-content">
+
+  <!-- Section: add as many of these as needed -->
+  <div class="cs-section" id="overview" data-animate>
+    <p class="cs-section-label">Overview</p><!-- TODO: update label -->
+    <p class="cs-section-body">
+      <!-- TODO: write section content -->
+      Section content goes here.
+    </p>
+  </div>
+
+  <!-- Image block -->
+  <div class="cs-section" data-animate>
+    <div class="cs-image">
+      <!-- TODO: replace with real image -->
+      <div class="cs-image-placeholder">Image</div>
+    </div>
+  </div>
+
+  <!-- Add more sections as needed, copy the pattern above -->
+
+</main>
+
+<!-- ── TOC ── -->
+<!-- TODO: update TOC items to match your section IDs before deploy -->
+<aside class="toc" aria-label="Page contents">
+  <ul class="toc-list">
+    <li><a href="#overview">Overview</a></li>
+    <!-- Add one <li> per section with matching id -->
+  </ul>
+</aside>
+
+<!-- ── NEXT PROJECT ── -->
+<!-- TODO: link to next case study and update name before deploy -->
+<section class="next-project">
+  <p class="next-project-label">Next</p>
+  <a href="#" class="next-project-link">
+    <span class="next-project-name">Case Study Title</span>
+    <span class="next-project-arrow">→</span>
+  </a>
+</section>
+
+<script>
+  /* ── hamburger menu ── */
+  const burger  = document.getElementById('burger');
+  const overlay = document.getElementById('nav-overlay');
+  burger.addEventListener('click', () => {
+    const isOpen = burger.getAttribute('aria-expanded') === 'true';
+    burger.setAttribute('aria-expanded', String(!isOpen));
+    overlay.classList.toggle('open', !isOpen);
+    overlay.setAttribute('aria-hidden', String(isOpen));
+    document.body.style.overflow = isOpen ? '' : 'hidden';
+  });
+
+  /* ── work sub-menu toggle ── */
+  const workToggle = document.getElementById('work-toggle');
+  const workSub    = document.getElementById('work-sub');
+  workToggle.addEventListener('click', () => {
+    const expanded = workToggle.getAttribute('aria-expanded') === 'true';
+    workToggle.setAttribute('aria-expanded', String(!expanded));
+    workToggle.classList.toggle('expanded', !expanded);
+    workSub.classList.toggle('open', !expanded);
+  });
+
+  /* ── close overlay on link click ── */
+  overlay.querySelectorAll('a.overlay-link').forEach(link => {
+    link.addEventListener('click', () => {
+      burger.setAttribute('aria-expanded', 'false');
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    });
+  });
+
+  /* ── TOC active state ── */
+  const tocLinks   = document.querySelectorAll('.toc-list a');
+  const tocTargets = document.querySelectorAll('.cs-section[id]');
+  const tocObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`.toc-list a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -60% 0px' });
+  tocTargets.forEach(el => tocObserver.observe(el));
+
+  /* ── wave progress bar ── */
+  const waveSvg   = document.getElementById('wave-svg');
+  const wavePath  = document.getElementById('wave-path');
+  const clipRect  = document.getElementById('progress-rect');
+  const trackLine = document.getElementById('track-line');
+  let builtWidth  = 0;
+  function buildWave(W) {
+    const cy = 5, amp = 2.5, cycles = 28;
+    let d = `M 0 ${cy}`;
+    for (let x = 1; x <= W; x++) {
+      const y = cy + Math.sin((x / W) * Math.PI * 2 * cycles) * amp;
+      d += ` L ${x} ${y}`;
+    }
+    wavePath.setAttribute('d', d);
+    trackLine.setAttribute('x2', W);
+    builtWidth = W;
+  }
+  function updateProgress() {
+    const W = waveSvg.clientWidth;
+    if (!W) return;
+    if (Math.abs(W - builtWidth) > 2) buildWave(W);
+    const pct = Math.min(window.scrollY / (document.documentElement.scrollHeight - window.innerHeight), 1);
+    clipRect.setAttribute('width', W * pct);
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  window.addEventListener('resize', updateProgress);
+  requestAnimationFrame(updateProgress);
+
+  /* ── scroll-reveal ── */
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('[data-animate]').forEach(el => revealObserver.observe(el));
+</script>
+
+</body>
+</html>

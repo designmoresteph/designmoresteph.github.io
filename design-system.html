@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design System — Steph D.</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+  body { padding-top: 72px; }
+
+  /* ── DS WRAPPER ── */
+  .ds-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 64px 48px 80px;
+  }
+
+  /* ── DS PAGE HEADER ── */
+  .ds-header {
+    margin-bottom: 80px;
+    padding-bottom: 40px;
+    border-bottom: var(--border-hair);
+  }
+  .ds-header h1 {
+    font-size: clamp(48px, 8vw, 72px);
+    font-weight: 400;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+  .ds-header-sub {
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+  .ds-header p { font-size: 15px; color: var(--ink-muted); line-height: 1.65; }
+  .ds-header code {
+    font-size: 12px;
+    background: var(--cream-dark);
+    border-radius: var(--radius-sm);
+    padding: 2px 7px;
+    color: var(--ink-muted);
+  }
+
+  /* ── DS SECTION ── */
+  .ds-section { margin-bottom: 80px; }
+  .ds-section-title {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    padding-bottom: 16px;
+    border-bottom: var(--border-hair);
+    margin-bottom: 32px;
+  }
+
+  /* ── COLORS ── */
+  .color-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+  }
+  .color-swatch { display: flex; flex-direction: column; gap: 10px; }
+  .swatch-block {
+    height: 80px;
+    border-radius: var(--radius-md);
+    border: var(--border-faint);
+  }
+  .swatch-label { font-size: 12px; color: var(--ink-muted); line-height: 1.4; }
+  .swatch-name  { font-size: 13px; font-weight: 500; color: var(--ink); display: block; }
+  .swatch-value { font-size: 11px; color: var(--ink-faint); display: block; }
+  .swatch-token { font-size: 11px; color: var(--ink-faint); display: block; font-family: monospace; }
+
+  /* ── TYPOGRAPHY ── */
+  .type-row {
+    padding: 24px 0;
+    border-bottom: var(--border-faint);
+    display: flex;
+    align-items: flex-start;
+    gap: 32px;
+  }
+  .type-row:last-child { border-bottom: none; }
+  .type-meta { min-width: 160px; flex-shrink: 0; padding-top: 18px; }
+  .type-meta-name {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    display: block;
+  }
+  .type-meta-detail {
+    font-size: 11px;
+    color: var(--ink-faint);
+    font-family: monospace;
+    display: block;
+    margin-top: 4px;
+  }
+  .type-samples {
+    display: flex;
+    gap: 40px;
+    flex: 1;
+    align-items: flex-end;
+  }
+  .type-sample-col {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+  }
+  .type-bp-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    display: block;
+  }
+  .type-bp-size {
+    font-size: 11px;
+    color: var(--ink-faint);
+    font-family: monospace;
+    display: block;
+    margin-top: 4px;
+  }
+  .type-sample { color: var(--ink); }
+
+  /* ── SPACING ── */
+  .space-row {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 12px 0;
+    border-bottom: var(--border-faint);
+  }
+  .space-row:last-child { border-bottom: none; }
+  .space-bar { background: var(--ink); height: 4px; border-radius: 2px; flex-shrink: 0; }
+  .space-meta { font-size: 12px; color: var(--ink-muted); }
+  .space-token { font-family: monospace; color: var(--ink-faint); font-size: 11px; }
+
+  /* ── COMPONENTS ── */
+  .component-row {
+    padding: 32px 0;
+    border-bottom: var(--border-faint);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .component-row:last-child { border-bottom: none; }
+  .component-label {
+    font-size: 10px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  /* preview: nav */
+  .preview-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.88);
+    border-radius: 10px;
+    box-shadow: var(--shadow-sm);
+  }
+  .preview-nav-brand { font-size: 14px; font-weight: 500; color: var(--ink); padding: 4px 6px; border-radius: 6px; }
+  .preview-hamburger { display: flex; flex-direction: column; gap: 5px; padding: 7px 8px; border-radius: 6px; background: rgba(0,0,0,0.04); }
+  .preview-hamburger span { display: block; height: 1px; background: var(--ink); }
+  .preview-hamburger span:nth-child(1) { width: 18px; }
+  .preview-hamburger span:nth-child(2) { width: 12px; }
+
+  /* preview: role pill */
+  .preview-pill {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--pond-mid);
+    border: 0.5px solid rgba(43,104,128,0.35);
+    border-radius: var(--radius-sm);
+    padding: 3px 8px;
+    background: rgba(43,104,128,0.06);
+  }
+
+  /* preview: hero */
+  .preview-hero {
+    background: var(--ink);
+    border-radius: var(--radius-md);
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    min-height: 240px;
+    justify-content: space-between;
+  }
+  .preview-hero-title {
+    font-size: 64px;
+    font-weight: 400;
+    color: #FFFFFF;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+  }
+  .preview-hero-meta {
+    display: flex;
+    gap: 24px;
+    border-top: 0.5px solid rgba(255,255,255,0.15);
+    padding-top: 20px;
+    flex-wrap: wrap;
+  }
+  .preview-meta-item { display: flex; flex-direction: column; gap: 3px; }
+  .preview-meta-label {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+  }
+  .preview-meta-value { font-size: 12px; color: rgba(255,255,255,0.7); }
+
+  /* preview: event card */
+  .preview-card { max-width: 480px; }
+  .preview-photo {
+    width: 100%;
+    aspect-ratio: 3/2;
+    background: var(--cream-dark);
+    border-radius: var(--radius-md);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .preview-event-name { font-size: 18px; font-weight: 400; color: var(--ink); }
+  .preview-event-date { font-size: 12px; color: var(--ink-muted); margin-top: 2px; }
+  .preview-event-caption { font-size: 13px; color: var(--ink-muted); margin-top: 8px; line-height: 1.55; }
+
+  /* preview: TOC */
+  .preview-toc {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    background: var(--cream-dark);
+    border-radius: var(--radius-md);
+    width: fit-content;
+  }
+  .preview-toc a {
+    font-size: 11px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    text-decoration: none;
+  }
+  .preview-toc a.active { color: var(--ink); }
+
+  /* preview: next project */
+  .preview-next {
+    border-top: var(--border-hair);
+    padding-top: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .preview-next-label {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 12px;
+  }
+  .preview-next-name {
+    font-size: 40px;
+    font-weight: 400;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    line-height: 1;
+  }
+  .preview-next-role { font-size: 13px; color: var(--ink-muted); margin-top: 8px; }
+
+  /* preview: wave */
+  .preview-wave {
+    position: relative;
+    height: 32px;
+    background: var(--cream-dark);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
+  .preview-wave svg { width: 100%; height: 10px; overflow: visible; }
+
+  /* preview: cs page header */
+  .preview-page-header {
+    background: var(--ink);
+    border-radius: var(--radius-md);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-height: 280px;
+    justify-content: space-between;
+  }
+  .preview-page-title {
+    font-size: clamp(48px, 10vw, 80px);
+    font-weight: 400;
+    color: #FFFFFF;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin-top: auto;
+  }
+  .preview-page-meta {
+    border-top: 0.5px solid rgba(255,255,255,0.15);
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .preview-page-meta-row { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+  .preview-page-meta-item { display: flex; flex-direction: column; gap: 3px; }
+  .preview-page-meta-divider { width: 0.5px; height: 12px; background: rgba(255,255,255,0.2); flex-shrink: 0; }
+  .preview-page-meta-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+  }
+  .preview-page-meta-value { font-size: 12px; color: rgba(255,255,255,0.75); }
+  .preview-page-lede { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.65; max-width: 480px; }
+
+  /* preview: cs content section */
+  .preview-cs-section { padding: 24px 0; border-bottom: var(--border-faint); }
+  .preview-cs-section:last-child { border-bottom: none; }
+  .preview-cs-label {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 10px;
+  }
+  .preview-cs-body { font-size: 16px; color: var(--ink-muted); line-height: 1.75; max-width: 560px; }
+  .preview-cs-image {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: var(--cream-dark);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  /* ── TEMPLATE BREAK ── */
+  .template-break {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 48px 64px;
+    border-top: var(--border-hair);
+  }
+  .template-break-eyebrow {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    padding-top: 48px;
+    margin-bottom: 12px;
+  }
+  .template-break-title {
+    font-size: 32px;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .template-break-sub { font-size: 14px; color: var(--ink-muted); }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="home.html" class="nav-brand">Stephanie Zhou</a>
+  <button class="hamburger" aria-label="Open menu" aria-expanded="false" id="burger">
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+
+<!-- ── OVERLAY MENU ── -->
+<div class="nav-overlay" id="nav-overlay" aria-hidden="true">
+  <div class="overlay-links">
+    <button class="overlay-link overlay-link--parent" id="work-toggle" aria-expanded="false">
+      <span class="overlay-link-name">Work</span>
+      <span class="overlay-expand">→</span>
+    </button>
+    <div class="overlay-sub-links" id="work-sub">
+      <a href="figma-timeline.html" class="overlay-link overlay-link--child">
+        <span class="overlay-link-name">Figma</span>
+        <span class="overlay-arrow">→</span>
+      </a>
+      <a href="case-study-museum-diary.html" class="overlay-link overlay-link--child">
+        <span class="overlay-link-name">Museum Diary</span>
+        <span class="overlay-arrow">→</span>
+      </a>
+    </div>
+    <!-- <a href="#" class="overlay-link">
+      <span class="overlay-link-name">About</span>
+      <span class="overlay-arrow">→</span>
+    </a> -->
+  </div>
+  <div class="overlay-contact">
+    <div class="overlay-contact-group">
+      <span class="overlay-contact-label">Email</span>
+      <a href="mailto:stephanielanzhou@gmail.com">stephanielanzhou@gmail.com</a>
+    </div>
+    <div class="overlay-contact-group">
+      <span class="overlay-contact-label">LinkedIn</span>
+      <a href="https://www.linkedin.com/in/stephanielanzhou/">linkedin.com/in/stephanielanzhou</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── WAVE PROGRESS BAR ── -->
+<div class="wave-progress" aria-hidden="true">
+  <svg id="wave-svg" preserveAspectRatio="none">
+    <defs>
+      <clipPath id="progress-clip">
+        <rect id="progress-rect" x="0" y="0" width="0" height="10"/>
+      </clipPath>
+    </defs>
+    <line id="track-line" x1="0" y1="5" x2="0" y2="5" stroke="rgba(0,0,0,0.08)" stroke-width="0.5"/>
+    <path id="wave-path" fill="none" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round" clip-path="url(#progress-clip)"/>
+  </svg>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     DESIGN SYSTEM
+     ════════════════════════════════════════ -->
+<div class="ds-wrap">
+
+  <div class="ds-header">
+    <h1>Design System</h1>
+    <p class="ds-header-sub">Tokens, components, and patterns across every page.</p>
+    <p>Edit <code>tokens.css</code> to update colors, fonts, spacing, and shared components.</p>
+  </div>
+
+  <!-- ══ COLORS ══ -->
+  <section class="ds-section">
+    <h2 class="ds-section-title">Colors</h2>
+    <div class="color-grid">
+
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#FFFFFF;border:1px solid #E8E8E8;"></div>
+        <div class="swatch-label">
+          <span class="swatch-name">White</span>
+          <span class="swatch-value">#FFFFFF</span>
+          <span class="swatch-token">--cream</span>
+        </div>
+      </div>
+
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#F7F7F7;"></div>
+        <div class="swatch-label">
+          <span class="swatch-name">Gray Mid</span>
+          <span class="swatch-value">#F7F7F7</span>
+          <span class="swatch-token">--cream-mid</span>
+        </div>
+      </div>
+
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#F2F2F2;"></div>
+        <div class="swatch-label">
+          <span class="swatch-name">Gray Dark</span>
+          <span class="swatch-value">#F2F2F2</span>
+          <span class="swatch-token">--cream-dark</span>
+        </div>
+      </div>
+
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#111111;"></div>
+        <div class="swatch-label">
+          <span class="swatch-name">Black</span>
+          <span class="swatch-value">#111111</span>
+          <span class="swatch-token">--ink</span>
+        </div>
+      </div>
+
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#777777;"></div>
+        <div class="swatch-label">
+          <span class="swatch-name">Gray</span>
+          <span class="swatch-value">#777777</span>
+          <span class="swatch-token">--ink-muted</span>
+        </div>
+      </div>
+
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#AAAAAA;"></div>
+        <div class="swatch-label">
+          <span class="swatch-name">Gray Faint</span>
+          <span class="swatch-value">#AAAAAA</span>
+          <span class="swatch-token">--ink-faint</span>
+        </div>
+      </div>
+
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#ECEDF2;"></div>
+        <div class="swatch-label">
+          <span class="swatch-name">Surface</span>
+          <span class="swatch-value">#ECEDF2</span>
+          <span class="swatch-token">--surface</span>
+        </div>
+      </div>
+
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#8A8AA8;"></div>
+        <div class="swatch-label">
+          <span class="swatch-name">Slate</span>
+          <span class="swatch-value">#8A8AA8</span>
+          <span class="swatch-token">--slate</span>
+        </div>
+      </div>
+
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#1E4D63;"></div>
+        <div class="swatch-label">
+          <span class="swatch-name">Pond</span>
+          <span class="swatch-value">#1E4D63</span>
+          <span class="swatch-token">--pond</span>
+        </div>
+      </div>
+
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#DEB8CC;"></div>
+        <div class="swatch-label">
+          <span class="swatch-name">Grad Pink</span>
+          <span class="swatch-value">#DEB8CC</span>
+          <span class="swatch-token">--grad-pink</span>
+        </div>
+      </div>
+
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#C4C4E0;"></div>
+        <div class="swatch-label">
+          <span class="swatch-name">Grad Lavender</span>
+          <span class="swatch-value">#C4C4E0</span>
+          <span class="swatch-token">--grad-lavender</span>
+        </div>
+      </div>
+
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#B8CADE;"></div>
+        <div class="swatch-label">
+          <span class="swatch-name">Grad Blue</span>
+          <span class="swatch-value">#B8CADE</span>
+          <span class="swatch-token">--grad-blue</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ TYPOGRAPHY ══ -->
+  <section class="ds-section">
+    <h2 class="ds-section-title">Typography — Google Sans</h2>
+
+    <div class="type-row">
+      <div class="type-meta">
+        <span class="type-meta-name">Display</span>
+        <span class="type-meta-detail">clamp(72px, 14vw, 180px)<br>weight 400</span>
+      </div>
+      <div class="type-samples">
+        <div class="type-sample-col">
+          <span class="type-bp-label">Desktop</span>
+          <div class="type-sample" style="font-size:96px;font-weight:400;line-height:0.95;letter-spacing:-0.02em;">Figma</div>
+          <span class="type-bp-size">96px</span>
+        </div>
+        <div class="type-sample-col">
+          <span class="type-bp-label">Tablet</span>
+          <div class="type-sample" style="font-size:72px;font-weight:400;line-height:0.95;letter-spacing:-0.02em;">Figma</div>
+          <span class="type-bp-size">72px</span>
+        </div>
+        <div class="type-sample-col">
+          <span class="type-bp-label">Mobile</span>
+          <div class="type-sample" style="font-size:48px;font-weight:400;line-height:0.95;letter-spacing:-0.02em;">Figma</div>
+          <span class="type-bp-size">48px</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="type-row">
+      <div class="type-meta">
+        <span class="type-meta-name">Heading</span>
+        <span class="type-meta-detail">clamp(28px, 4vw, 44px)<br>weight 400</span>
+      </div>
+      <div class="type-samples">
+        <div class="type-sample-col">
+          <span class="type-bp-label">Desktop</span>
+          <div class="type-sample" style="font-size:44px;font-weight:400;letter-spacing:-0.01em;">At Figma</div>
+          <span class="type-bp-size">44px</span>
+        </div>
+        <div class="type-sample-col">
+          <span class="type-bp-label">Tablet</span>
+          <div class="type-sample" style="font-size:36px;font-weight:400;letter-spacing:-0.01em;">At Figma</div>
+          <span class="type-bp-size">36px</span>
+        </div>
+        <div class="type-sample-col">
+          <span class="type-bp-label">Mobile</span>
+          <div class="type-sample" style="font-size:28px;font-weight:400;letter-spacing:-0.01em;">At Figma</div>
+          <span class="type-bp-size">28px</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="type-row">
+      <div class="type-meta">
+        <span class="type-meta-name">Event Name</span>
+        <span class="type-meta-detail">18px · weight 400<br>fixed</span>
+      </div>
+      <div class="type-samples">
+        <div class="type-sample-col">
+          <span class="type-bp-label">Desktop</span>
+          <div class="type-sample" style="font-size:18px;font-weight:400;">University of Michigan Roadshow</div>
+          <span class="type-bp-size">18px</span>
+        </div>
+        <div class="type-sample-col">
+          <span class="type-bp-label">Tablet</span>
+          <div class="type-sample" style="font-size:18px;font-weight:400;">University of Michigan Roadshow</div>
+          <span class="type-bp-size">18px</span>
+        </div>
+        <div class="type-sample-col">
+          <span class="type-bp-label">Mobile</span>
+          <div class="type-sample" style="font-size:18px;font-weight:400;">University of Michigan Roadshow</div>
+          <span class="type-bp-size">18px</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="type-row">
+      <div class="type-meta">
+        <span class="type-meta-name">Body</span>
+        <span class="type-meta-detail">16px · weight 400<br>line-height 1.7 · fixed</span>
+      </div>
+      <div class="type-samples">
+        <div class="type-sample-col">
+          <span class="type-bp-label">Desktop</span>
+          <div class="type-sample" style="font-size:16px;color:var(--ink-muted);line-height:1.7;">I've spent the last year and a half as a product design educator at Figma.</div>
+          <span class="type-bp-size">16px</span>
+        </div>
+        <div class="type-sample-col">
+          <span class="type-bp-label">Tablet</span>
+          <div class="type-sample" style="font-size:16px;color:var(--ink-muted);line-height:1.7;">I've spent the last year and a half as a product design educator at Figma.</div>
+          <span class="type-bp-size">16px</span>
+        </div>
+        <div class="type-sample-col">
+          <span class="type-bp-label">Mobile</span>
+          <div class="type-sample" style="font-size:16px;color:var(--ink-muted);line-height:1.7;">I've spent the last year and a half as a product design educator at Figma.</div>
+          <span class="type-bp-size">16px</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="type-row">
+      <div class="type-meta">
+        <span class="type-meta-name">Caption</span>
+        <span class="type-meta-detail">13px · weight 400<br>color: --ink-muted · fixed</span>
+      </div>
+      <div class="type-samples">
+        <div class="type-sample-col">
+          <span class="type-bp-label">Desktop</span>
+          <div class="type-sample" style="font-size:13px;color:var(--ink-muted);">Delivered live video, interactive Figma Make demo, and marketing activation.</div>
+          <span class="type-bp-size">13px</span>
+        </div>
+        <div class="type-sample-col">
+          <span class="type-bp-label">Tablet</span>
+          <div class="type-sample" style="font-size:13px;color:var(--ink-muted);">Delivered live video, interactive Figma Make demo, and marketing activation.</div>
+          <span class="type-bp-size">13px</span>
+        </div>
+        <div class="type-sample-col">
+          <span class="type-bp-label">Mobile</span>
+          <div class="type-sample" style="font-size:13px;color:var(--ink-muted);">Delivered live video, interactive Figma Make demo, and marketing activation.</div>
+          <span class="type-bp-size">13px</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="type-row">
+      <div class="type-meta">
+        <span class="type-meta-name">Label / Kicker</span>
+        <span class="type-meta-detail">10–11px · weight 500<br>uppercase · tracked · fixed</span>
+      </div>
+      <div class="type-samples">
+        <div class="type-sample-col">
+          <span class="type-bp-label">Desktop</span>
+          <div class="type-sample" style="font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-faint);">Universities</div>
+          <span class="type-bp-size">11px</span>
+        </div>
+        <div class="type-sample-col">
+          <span class="type-bp-label">Tablet</span>
+          <div class="type-sample" style="font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-faint);">Universities</div>
+          <span class="type-bp-size">11px</span>
+        </div>
+        <div class="type-sample-col">
+          <span class="type-bp-label">Mobile</span>
+          <div class="type-sample" style="font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-faint);">Universities</div>
+          <span class="type-bp-size">11px</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="type-row">
+      <div class="type-meta">
+        <span class="type-meta-name">Date / Meta</span>
+        <span class="type-meta-detail">12px · color: --ink-muted<br>fixed</span>
+      </div>
+      <div class="type-samples">
+        <div class="type-sample-col">
+          <span class="type-bp-label">Desktop</span>
+          <div class="type-sample" style="font-size:12px;color:var(--ink-muted);">September 2025 · Ann Arbor</div>
+          <span class="type-bp-size">12px</span>
+        </div>
+        <div class="type-sample-col">
+          <span class="type-bp-label">Tablet</span>
+          <div class="type-sample" style="font-size:12px;color:var(--ink-muted);">September 2025 · Ann Arbor</div>
+          <span class="type-bp-size">12px</span>
+        </div>
+        <div class="type-sample-col">
+          <span class="type-bp-label">Mobile</span>
+          <div class="type-sample" style="font-size:12px;color:var(--ink-muted);">September 2025 · Ann Arbor</div>
+          <span class="type-bp-size">12px</span>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ══ SPACING ══ -->
+  <section class="ds-section">
+    <h2 class="ds-section-title">Spacing</h2>
+
+    <div class="space-row">
+      <div class="space-bar" style="width:8px;"></div>
+      <div class="space-meta">8px <span class="space-token">--space-xs</span></div>
+    </div>
+    <div class="space-row">
+      <div class="space-bar" style="width:16px;"></div>
+      <div class="space-meta">16px <span class="space-token">--space-sm</span></div>
+    </div>
+    <div class="space-row">
+      <div class="space-bar" style="width:32px;"></div>
+      <div class="space-meta">32px <span class="space-token">--space-md</span></div>
+    </div>
+    <div class="space-row">
+      <div class="space-bar" style="width:48px;"></div>
+      <div class="space-meta">48px <span class="space-token">--space-lg</span></div>
+    </div>
+    <div class="space-row">
+      <div class="space-bar" style="width:80px;"></div>
+      <div class="space-meta">80px <span class="space-token">--space-xl</span></div>
+    </div>
+
+  </section>
+
+  <!-- ══ COMPONENTS ══ -->
+  <section class="ds-section">
+    <h2 class="ds-section-title">Components</h2>
+
+    <div class="component-row">
+      <span class="component-label">Nav Bar</span>
+      <div class="preview-nav">
+        <span class="preview-nav-brand">Stephanie Zhou</span>
+        <div class="preview-hamburger"><span></span><span></span></div>
+      </div>
+    </div>
+
+    <div class="component-row">
+      <span class="component-label">Hero Header</span>
+      <div class="preview-hero">
+        <div class="preview-hero-title">Company</div>
+        <div class="preview-hero-meta">
+          <div class="preview-meta-item">
+            <span class="preview-meta-label">Role</span>
+            <span class="preview-meta-value">Product Design Educator</span>
+          </div>
+          <div class="preview-meta-item">
+            <span class="preview-meta-label">Since</span>
+            <span class="preview-meta-value">2024 · 1.5 years</span>
+          </div>
+          <div class="preview-meta-item">
+            <span class="preview-meta-label">Favorite Project</span>
+            <span class="preview-meta-value">AI & Lorem Ipsum Lecture</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="component-row">
+      <span class="component-label">Event Card</span>
+      <div class="preview-card">
+        <div class="preview-photo">Photo</div>
+        <div class="preview-event-name">University of Michigan Roadshow</div>
+        <div class="preview-event-date">September 2025 · Ann Arbor</div>
+        <div class="preview-event-caption">Three in-person campus tours with lectures and pop-up ice cream + boba trucks to promote Figma Make.</div>
+      </div>
+    </div>
+
+    <div class="component-row">
+      <span class="component-label">TOC (bottom-left, desktop)</span>
+      <div class="preview-toc">
+        <a href="#" class="active">2026</a>
+        <a href="#">2025</a>
+        <a href="#">2024</a>
+      </div>
+    </div>
+
+    <div class="component-row">
+      <span class="component-label">Next Project Footer</span>
+      <div>
+        <div class="preview-next-label">Next</div>
+        <div class="preview-next">
+          <div>
+            <div class="preview-next-name">Case Study Title</div>
+            <div class="preview-next-role">Product Design Educator · 2024–2025</div>
+          </div>
+          <span style="font-size:28px;">→</span>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ══ CASE STUDY COMPONENTS ══ -->
+  <section class="ds-section">
+    <h2 class="ds-section-title">Case Study Components</h2>
+
+    <div class="component-row">
+      <span class="component-label">Wave Progress Indicator — fixed below nav, scroll-driven</span>
+      <div class="preview-wave">
+        <svg viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true">
+          <path fill="none" stroke="rgba(44,40,32,0.10)" stroke-width="1.5" vector-effect="non-scaling-stroke"
+            d="M0,5 Q6.25,1 12.5,5 Q18.75,9 25,5 Q31.25,1 37.5,5 Q43.75,9 50,5 Q56.25,1 62.5,5 Q68.75,9 75,5 Q81.25,1 87.5,5 Q93.75,9 100,5"/>
+          <path fill="none" stroke="var(--ink)" stroke-width="1.5" vector-effect="non-scaling-stroke"
+            stroke-dasharray="260" stroke-dashoffset="130"
+            d="M0,5 Q6.25,1 12.5,5 Q18.75,9 25,5 Q31.25,1 37.5,5 Q43.75,9 50,5 Q56.25,1 62.5,5 Q68.75,9 75,5 Q81.25,1 87.5,5 Q93.75,9 100,5"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="component-row">
+      <span class="component-label">Page Hero Header — dark, display title + role meta</span>
+      <div class="preview-page-header">
+        <div></div>
+        <h1 class="preview-page-title">Company</h1>
+        <div class="preview-page-meta">
+          <div class="preview-page-meta-row">
+            <div class="preview-page-meta-item">
+              <span class="preview-page-meta-label">Role</span>
+              <span class="preview-page-meta-value">Product Design Educator</span>
+            </div>
+            <div class="preview-page-meta-divider"></div>
+            <div class="preview-page-meta-item">
+              <span class="preview-page-meta-label">Since</span>
+              <span class="preview-page-meta-value">2024 – Present</span>
+            </div>
+            <div class="preview-page-meta-divider"></div>
+            <div class="preview-page-meta-item">
+              <span class="preview-page-meta-label">Favorite Project</span>
+              <span class="preview-page-meta-value">AI & Lorem Ipsum Lecture</span>
+            </div>
+          </div>
+          <p class="preview-page-lede">I've spent the last year and a half as a product design educator at Figma, teaching AI-era design across 27 universities and 36+ events.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="component-row">
+      <span class="component-label">Content Section — label + body text</span>
+      <div class="preview-cs-section">
+        <p class="preview-cs-label">Overview</p>
+        <p class="preview-cs-body">Section content goes here. Use <code style="font-size:11px;background:var(--cream-dark);border-radius:var(--radius-sm);padding:2px 6px;">cs-section-label</code> for the kicker and <code style="font-size:11px;background:var(--cream-dark);border-radius:var(--radius-sm);padding:2px 6px;">cs-section-body</code> for the paragraph.</p>
+      </div>
+    </div>
+
+    <div class="component-row">
+      <span class="component-label">Image Block — 16:9, full-width</span>
+      <div class="preview-cs-image">Image</div>
+    </div>
+
+    <div class="component-row">
+      <span class="component-label">TOC — fixed bottom-left, desktop only (&gt;1024px)</span>
+      <div class="preview-toc">
+        <a href="#" class="active">Overview</a>
+        <a href="#">Context</a>
+        <a href="#">Process</a>
+        <a href="#">Outcomes</a>
+      </div>
+    </div>
+
+  </section>
+
+</div><!-- /ds-wrap -->
+
+
+<!-- ════════════════════════════════════════
+     CASE STUDY TEMPLATE
+     ════════════════════════════════════════ -->
+
+<div class="template-break">
+  <p class="template-break-eyebrow">Template</p>
+  <h2 class="template-break-title">Case Study Template</h2>
+  <p class="template-break-sub">Live layout below — duplicate this file to start a new case study. All styles come from <code style="font-size:12px;background:var(--cream-dark);border-radius:var(--radius-sm);padding:2px 7px;color:var(--ink-muted);">tokens.css</code>.</p>
+</div>
+
+<!-- ── HERO HEADER ── -->
+<header class="page-header">
+  <div></div>
+  <!-- TODO: update company/project name -->
+  <h1 class="page-hero-title">Company</h1>
+  <div class="page-meta-block">
+    <div class="page-meta-row">
+      <div class="page-meta-item">
+        <span class="page-meta-label">Role</span>
+        <!-- TODO: update role -->
+        <span class="page-meta-value">Your Role Here</span>
+      </div>
+      <div class="page-meta-divider"></div>
+      <div class="page-meta-item">
+        <span class="page-meta-label">Since</span>
+        <!-- TODO: update dates -->
+        <span class="page-meta-value">Year – Year</span>
+      </div>
+    </div>
+    <!-- TODO: update intro paragraph -->
+    <p class="page-meta-lede">Write your intro paragraph here. What did you do, why does it matter, what are you proud of?</p>
+    <div class="page-meta-row">
+      <div class="page-meta-item">
+        <span class="page-meta-label">Favorite Project</span>
+        <!-- TODO: update favorite project -->
+        <span class="page-meta-value">Project Name · Context</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ── CONTENT AREA ── -->
+<main class="cs-content">
+
+  <div class="cs-section" id="cs-overview" data-animate>
+    <p class="cs-section-label">Overview</p><!-- TODO: update label -->
+    <p class="cs-section-body">
+      <!-- TODO: write section content -->
+      Section content goes here.
+    </p>
+  </div>
+
+  <div class="cs-section" data-animate>
+    <div class="cs-image">
+      <!-- TODO: replace with real image -->
+      <div class="cs-image-placeholder">Image</div>
+    </div>
+  </div>
+
+  <div class="cs-section" id="cs-context" data-animate>
+    <p class="cs-section-label">Context</p><!-- TODO: update label -->
+    <p class="cs-section-body">Add more sections by copying the pattern above. Give each a unique id for the TOC.</p>
+  </div>
+
+  <!-- Add more sections as needed, copy the pattern above -->
+
+</main>
+
+<!-- ── TOC ── -->
+<!-- TODO: update TOC items to match section IDs -->
+<aside class="toc" aria-label="Page contents">
+  <ul class="toc-list">
+    <li><a href="#cs-overview">Overview</a></li>
+    <li><a href="#cs-context">Context</a></li>
+  </ul>
+</aside>
+
+<!-- ── NEXT PROJECT ── -->
+<!-- TODO: link to next case study and update name -->
+<section class="next-project">
+  <p class="next-project-label">Next</p>
+  <a href="#" class="next-project-link">
+    <span class="next-project-name">Case Study Title</span>
+    <span class="next-project-arrow">→</span>
+  </a>
+</section>
+
+
+<script>
+  /* ── hamburger menu ── */
+  const burger  = document.getElementById('burger');
+  const overlay = document.getElementById('nav-overlay');
+  burger.addEventListener('click', () => {
+    const isOpen = burger.getAttribute('aria-expanded') === 'true';
+    burger.setAttribute('aria-expanded', String(!isOpen));
+    overlay.classList.toggle('open', !isOpen);
+    overlay.setAttribute('aria-hidden', String(isOpen));
+    document.body.style.overflow = isOpen ? '' : 'hidden';
+  });
+
+  /* ── work sub-menu toggle ── */
+  const workToggle = document.getElementById('work-toggle');
+  const workSub    = document.getElementById('work-sub');
+  workToggle.addEventListener('click', () => {
+    const expanded = workToggle.getAttribute('aria-expanded') === 'true';
+    workToggle.setAttribute('aria-expanded', String(!expanded));
+    workToggle.classList.toggle('expanded', !expanded);
+    workSub.classList.toggle('open', !expanded);
+  });
+
+  /* ── close overlay on link click ── */
+  overlay.querySelectorAll('a.overlay-link').forEach(link => {
+    link.addEventListener('click', () => {
+      burger.setAttribute('aria-expanded', 'false');
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    });
+  });
+
+  /* ── TOC active state (only cs-sections with id) ── */
+  const tocLinks   = document.querySelectorAll('.toc-list a');
+  const tocTargets = document.querySelectorAll('.cs-section[id]');
+  const tocObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`.toc-list a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -60% 0px' });
+  tocTargets.forEach(el => tocObserver.observe(el));
+
+  /* ── wave progress bar ── */
+  const waveSvg   = document.getElementById('wave-svg');
+  const wavePath  = document.getElementById('wave-path');
+  const clipRect  = document.getElementById('progress-rect');
+  const trackLine = document.getElementById('track-line');
+  let builtWidth  = 0;
+  function buildWave(W) {
+    const cy = 5, amp = 2.5, cycles = 28;
+    let d = `M 0 ${cy}`;
+    for (let x = 1; x <= W; x++) {
+      const y = cy + Math.sin((x / W) * Math.PI * 2 * cycles) * amp;
+      d += ` L ${x} ${y}`;
+    }
+    wavePath.setAttribute('d', d);
+    trackLine.setAttribute('x2', W);
+    builtWidth = W;
+  }
+  function updateProgress() {
+    const W = waveSvg.clientWidth;
+    if (!W) return;
+    if (Math.abs(W - builtWidth) > 2) buildWave(W);
+    const pct = Math.min(window.scrollY / (document.documentElement.scrollHeight - window.innerHeight), 1);
+    clipRect.setAttribute('width', W * pct);
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  window.addEventListener('resize', updateProgress);
+  requestAnimationFrame(updateProgress);
+
+  /* ── scroll-reveal ── */
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('[data-animate]').forEach(el => revealObserver.observe(el));
+</script>
+
+</body>
+</html>

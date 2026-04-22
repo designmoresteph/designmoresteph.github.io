@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Steph D.</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+  body { padding-top: 72px; }
+
+  /* ── GRADIENT HERO ── */
+  .about-hero {
+    min-height: 100svh;
+    background: var(--gradient-aurora);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 72px 32px 80px;
+    text-align: center;
+  }
+
+  /* speech bubble */
+  .bubble {
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 28px;
+    padding: 22px 40px;
+    font-size: clamp(28px, 6vw, 48px);
+    font-weight: 400;
+    color: #1A1A2E;
+    line-height: 1.1;
+    position: relative;
+    margin-bottom: 80px;
+    box-shadow: 0 2px 24px rgba(100,100,160,0.10);
+  }
+  /* speech bubble tail */
+  .bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -22px;
+    left: 50px;
+    width: 28px;
+    height: 24px;
+    background: rgba(255,255,255,0.92);
+    clip-path: polygon(0 0, 100% 0, 30% 100%);
+    border-radius: 0 0 0 4px;
+  }
+
+  /* hero body copy */
+  .about-hero-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    max-width: 520px;
+  }
+  .about-hero-copy p {
+    font-size: clamp(18px, 3.5vw, 26px);
+    font-weight: 400;
+    line-height: 1.5;
+    color: #1A1A2E;
+  }
+  .about-hero-copy p.secondary {
+    color: rgba(26,26,46,0.65);
+  }
+
+  /* ── ABOUT CONTENT (below hero) ── */
+  .about-content {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 100px 48px 160px;
+  }
+  .about-section {
+    margin-bottom: 80px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+  }
+  .about-section.visible { opacity: 1; transform: translateY(0); }
+  .about-section-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 20px;
+  }
+  .about-section h2 {
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 20px;
+  }
+  .about-section p {
+    font-size: 17px;
+    color: var(--ink-muted);
+    line-height: 1.75;
+    max-width: 600px;
+  }
+  .about-section p + p { margin-top: 16px; }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="home.html" class="nav-brand">Stephanie Zhou</a>
+  <button class="hamburger" aria-label="Open menu" aria-expanded="false" id="burger">
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+
+<!-- ── OVERLAY MENU ── -->
+<div class="nav-overlay" id="nav-overlay" aria-hidden="true">
+  <div class="overlay-links">
+    <button class="overlay-link overlay-link--parent" id="work-toggle" aria-expanded="false">
+      <span class="overlay-link-name">Work</span>
+      <span class="overlay-expand">→</span>
+    </button>
+    <div class="overlay-sub-links" id="work-sub">
+      <a href="figma-timeline.html" class="overlay-link overlay-link--child">
+        <span class="overlay-link-name">Figma</span>
+        <span class="overlay-arrow">→</span>
+      </a>
+      <a href="case-study-museum-diary.html" class="overlay-link overlay-link--child">
+        <span class="overlay-link-name">Museum Diary</span>
+        <span class="overlay-arrow">→</span>
+      </a>
+    </div>
+    <!-- <a href="about.html" class="overlay-link">
+      <span class="overlay-link-name">About</span>
+      <span class="overlay-arrow">→</span>
+    </a> -->
+  </div>
+  <div class="overlay-contact">
+    <div class="overlay-contact-group">
+      <span class="overlay-contact-label">Email</span>
+      <a href="mailto:stephanielanzhou@gmail.com">stephanielanzhou@gmail.com</a>
+    </div>
+    <div class="overlay-contact-group">
+      <span class="overlay-contact-label">LinkedIn</span>
+      <a href="https://www.linkedin.com/in/stephanielanzhou/">linkedin.com/in/stephanielanzhou</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── WAVE PROGRESS BAR ── -->
+<div class="wave-progress" aria-hidden="true">
+  <svg id="wave-svg" preserveAspectRatio="none">
+    <defs>
+      <clipPath id="progress-clip">
+        <rect id="progress-rect" x="0" y="0" width="0" height="10"/>
+      </clipPath>
+    </defs>
+    <line id="track-line" x1="0" y1="5" x2="0" y2="5" stroke="rgba(0,0,0,0.08)" stroke-width="0.5"/>
+    <path id="wave-path" fill="none" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round" clip-path="url(#progress-clip)"/>
+  </svg>
+</div>
+
+<!-- ── GRADIENT HERO ── -->
+<section class="about-hero">
+  <div class="bubble">Why Steph?</div>
+
+  <div class="about-hero-copy">
+    <p>Everything I do starts with this question.</p>
+    <p class="secondary">Why should this exist? Why should anyone care? Why does the craft matter as much as the outcome?</p>
+    <p class="secondary">Eventually, the "why" leads me to the work.</p>
+  </div>
+</section>
+
+<!-- ── ABOUT CONTENT ── -->
+<main class="about-content">
+
+  <div class="about-section" data-animate>
+    <p class="about-section-label">Background</p>
+    <h2>Product designer who thinks like a creative technologist.</h2>
+    <p><!-- TODO: write bio --> Placeholder — replace with your background paragraph.</p>
+  </div>
+
+  <div class="about-section" data-animate>
+    <p class="about-section-label">How I work</p>
+    <h2>Design is a conversation, not a deliverable.</h2>
+    <p><!-- TODO: write approach --> Placeholder — replace with your working style.</p>
+  </div>
+
+  <div class="about-section" data-animate>
+    <p class="about-section-label">Outside the work</p>
+    <h2><!-- TODO: personal headline --></h2>
+    <p><!-- TODO: personal paragraph --></p>
+  </div>
+
+</main>
+
+<script>
+  /* ── hamburger menu ── */
+  const burger  = document.getElementById('burger');
+  const overlay = document.getElementById('nav-overlay');
+  burger.addEventListener('click', () => {
+    const isOpen = burger.getAttribute('aria-expanded') === 'true';
+    burger.setAttribute('aria-expanded', String(!isOpen));
+    overlay.classList.toggle('open', !isOpen);
+    overlay.setAttribute('aria-hidden', String(isOpen));
+    document.body.style.overflow = isOpen ? '' : 'hidden';
+  });
+  const workToggle = document.getElementById('work-toggle');
+  const workSub    = document.getElementById('work-sub');
+  workToggle.addEventListener('click', () => {
+    const expanded = workToggle.getAttribute('aria-expanded') === 'true';
+    workToggle.setAttribute('aria-expanded', String(!expanded));
+    workToggle.classList.toggle('expanded', !expanded);
+    workSub.classList.toggle('open', !expanded);
+  });
+  overlay.querySelectorAll('a.overlay-link').forEach(link => {
+    link.addEventListener('click', () => {
+      burger.setAttribute('aria-expanded', 'false');
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    });
+  });
+
+  /* ── wave progress bar ── */
+  const waveSvg   = document.getElementById('wave-svg');
+  const wavePath  = document.getElementById('wave-path');
+  const clipRect  = document.getElementById('progress-rect');
+  const trackLine = document.getElementById('track-line');
+  let builtWidth  = 0;
+  function buildWave(W) {
+    const cy = 5, amp = 2.5, cycles = 28;
+    let d = `M 0 ${cy}`;
+    for (let x = 1; x <= W; x++) {
+      const y = cy + Math.sin((x / W) * Math.PI * 2 * cycles) * amp;
+      d += ` L ${x} ${y}`;
+    }
+    wavePath.setAttribute('d', d);
+    trackLine.setAttribute('x2', W);
+    builtWidth = W;
+  }
+  function updateProgress() {
+    const W = waveSvg.clientWidth;
+    if (!W) return;
+    if (Math.abs(W - builtWidth) > 2) buildWave(W);
+    const pct = Math.min(window.scrollY / (document.documentElement.scrollHeight - window.innerHeight), 1);
+    clipRect.setAttribute('width', W * pct);
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  window.addEventListener('resize', updateProgress);
+  requestAnimationFrame(updateProgress);
+
+  /* ── scroll-reveal ── */
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('[data-animate]').forEach(el => revealObserver.observe(el));
+</script>
+
+</body>
+</html>
