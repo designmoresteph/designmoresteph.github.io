@@ -131,9 +131,13 @@
   footer a:hover { color: var(--ink-muted); }
 
   /* ── SCROLL ANIMATIONS ── */
+  body { transition: background-color 1s ease; }
+
   @media (prefers-reduced-motion: no-preference) {
     .fade-up { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
     .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .cs-section-heading { opacity: 0; transform: translateX(-20px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+    .cs-section-heading.visible { opacity: 1; transform: translateX(0); }
   }
 
   /* ── WAVE BAR: white stroke so mix-blend-mode:difference inverts properly ── */
@@ -223,42 +227,29 @@
 <nav>
   <a href="index.html" class="nav-brand">Stephanie Zhou</a>
   <button class="hamburger" aria-label="Open menu" aria-expanded="false" id="burger">
-    <span></span>
-    <span></span>
+    <span></span><span></span><span></span>
   </button>
 </nav>
 
 <!-- ── OVERLAY MENU ── -->
 <div class="nav-overlay" id="nav-overlay" aria-hidden="true">
   <div class="overlay-links">
-    <button class="overlay-link overlay-link--parent" id="work-toggle" aria-expanded="false">
-      <span class="overlay-link-name">Work</span>
-      <span class="overlay-expand">→</span>
-    </button>
-    <div class="overlay-sub-links" id="work-sub">
-      <a href="figma-timeline.html" class="overlay-link overlay-link--child">
-        <span class="overlay-link-name">Figma</span>
-        <span class="overlay-arrow">→</span>
-      </a>
-      <a href="case-study-museum-diary.html" class="overlay-link overlay-link--child">
-        <span class="overlay-link-name">Museum Diary</span>
-        <span class="overlay-arrow">→</span>
-      </a>
-    </div>
+    <a href="figma-timeline.html" class="overlay-link">
+      <span class="overlay-link-name">Figma</span>
+      <span class="overlay-arrow">→</span>
+    </a>
+    <a href="case-study-museum-diary.html" class="overlay-link">
+      <span class="overlay-link-name">Museum Diary</span>
+      <span class="overlay-arrow">→</span>
+    </a>
     <!-- <a href="about.html" class="overlay-link">
       <span class="overlay-link-name">About</span>
       <span class="overlay-arrow">→</span>
     </a> -->
   </div>
   <div class="overlay-contact">
-    <div class="overlay-contact-group">
-      <span class="overlay-contact-label">Email</span>
-      <a href="mailto:stephanielanzhou@gmail.com">stephanielanzhou@gmail.com</a>
-    </div>
-    <div class="overlay-contact-group">
-      <span class="overlay-contact-label">LinkedIn</span>
-      <a href="https://www.linkedin.com/in/stephanielanzhou/" rel="noopener noreferrer">linkedin.com/in/stephanielanzhou</a>
-    </div>
+    <a href="mailto:stephanielanzhou@gmail.com" class="overlay-contact-link">Email</a>
+    <a href="https://www.linkedin.com/in/stephanielanzhou/" class="overlay-contact-link">LinkedIn</a>
   </div>
 </div>
 
@@ -343,7 +334,7 @@
   <hr class="cs-divider">
 
   <!-- 4. SUB-CONCEPT BREAKDOWNS -->
-  <div class="cs-section fade-up">
+  <div class="cs-section fade-up" data-bg="#ECEEF6">
     <h2 class="cs-section-heading">Capture</h2>
     <div class="cs-subs">
       <div class="cs-sub">
@@ -443,7 +434,7 @@
   <hr class="cs-divider">
 
   <!-- 7. CLOSING REFLECTION -->
-  <div class="cs-section fade-up">
+  <div class="cs-section fade-up" data-bg="#F0EBE0">
     <h2 class="cs-section-heading">Reflection</h2>
     <div class="two-col">
       <div class="cs-body">
@@ -491,14 +482,6 @@
     overlay.setAttribute('aria-hidden', String(isOpen));
     document.body.style.overflow = isOpen ? '' : 'hidden';
   });
-  const workToggle = document.getElementById('work-toggle');
-  const workSub    = document.getElementById('work-sub');
-  workToggle.addEventListener('click', () => {
-    const expanded = workToggle.getAttribute('aria-expanded') === 'true';
-    workToggle.setAttribute('aria-expanded', String(!expanded));
-    workToggle.classList.toggle('expanded', !expanded);
-    workSub.classList.toggle('open', !expanded);
-  });
   overlay.querySelectorAll('a.overlay-link').forEach(link => {
     link.addEventListener('click', () => {
       burger.setAttribute('aria-expanded', 'false');
@@ -535,6 +518,29 @@
   window.addEventListener('scroll', updateProgress, { passive: true });
   window.addEventListener('resize', updateProgress);
   requestAnimationFrame(updateProgress);
+
+  /* ── background color shifts ── */
+  const bgSections = document.querySelectorAll('[data-bg]');
+  function updateBg() {
+    let bg = '#FFFFFF';
+    bgSections.forEach(s => {
+      if (s.getBoundingClientRect().top < window.innerHeight * 0.5) bg = s.dataset.bg;
+    });
+    document.body.style.backgroundColor = bg;
+  }
+  window.addEventListener('scroll', updateBg, { passive: true });
+  updateBg();
+
+  /* ── heading slide-in ── */
+  const headingObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        headingObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.cs-section-heading').forEach(el => headingObserver.observe(el));
 
   /* ── scroll-triggered video playback ── */
   const videoObserver = new IntersectionObserver((entries) => {

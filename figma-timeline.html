@@ -555,6 +555,33 @@
     }
   }
 
+  /* ── BACKGROUND SHIFTS ── */
+  body { transition: background-color 1s ease; }
+  .year-label, .event-name, .event-date, .event-caption,
+  .speaking-group-label, .speaking-group-names, .next-project-label,
+  .toc-list a { transition: color 0.9s ease; }
+  .year-rule, .speaking-list { transition: background-color 0.9s ease, border-color 0.9s ease; }
+  .next-project, footer { transition: border-color 0.9s ease; }
+  .next-project-link { transition: color 0.9s ease, opacity 0.2s; }
+
+  body.dark-bg .year-label      { color: rgba(255,255,255,0.45); }
+  body.dark-bg .year-rule       { background: rgba(255,255,255,0.10); }
+  body.dark-bg .event-name      { color: rgba(255,255,255,0.90); }
+  body.dark-bg .event-date      { color: rgba(255,255,255,0.45); }
+  body.dark-bg .event-caption   { color: rgba(255,255,255,0.60); }
+  body.dark-bg .speaking-group-label  { color: rgba(255,255,255,0.35); }
+  body.dark-bg .speaking-group-names  { color: rgba(255,255,255,0.65); }
+  body.dark-bg .speaking-group-names .count { color: rgba(255,255,255,0.35); }
+  body.dark-bg .speaking-list   { border-top-color: rgba(255,255,255,0.08); }
+  body.dark-bg .next-project    { border-top-color: rgba(255,255,255,0.08); }
+  body.dark-bg .next-project-label { color: rgba(255,255,255,0.35); }
+  body.dark-bg .next-project-link  { color: rgba(255,255,255,0.90); }
+  body.dark-bg footer           { border-top-color: rgba(255,255,255,0.08); }
+  body.dark-bg footer a         { color: rgba(255,255,255,0.35); }
+  body.dark-bg .toc-list a      { color: rgba(255,255,255,0.35); }
+  body.dark-bg .toc-list a.active { color: rgba(255,255,255,0.90); }
+  body.dark-bg .toc-list a.active::before { background: rgba(255,255,255,0.90); }
+
   /* ── CAPTION ── */
   .event-caption {
     margin-top: 12px;
@@ -580,34 +607,22 @@
 <!-- ── OVERLAY MENU ── -->
 <div class="nav-overlay" id="nav-overlay" aria-hidden="true">
   <div class="overlay-links">
-    <button class="overlay-link overlay-link--parent" id="work-toggle" aria-expanded="false">
-      <span class="overlay-link-name">Work</span>
-      <span class="overlay-expand">→</span>
-    </button>
-    <div class="overlay-sub-links" id="work-sub">
-      <a href="figma-timeline.html" class="overlay-link overlay-link--child">
-        <span class="overlay-link-name">Figma</span>
-        <span class="overlay-arrow">→</span>
-      </a>
-      <a href="case-study-museum-diary.html" class="overlay-link overlay-link--child">
-        <span class="overlay-link-name">Museum Diary</span>
-        <span class="overlay-arrow">→</span>
-      </a>
-    </div>
-    <!-- <a href="#" class="overlay-link">
+    <a href="figma-timeline.html" class="overlay-link">
+      <span class="overlay-link-name">Figma</span>
+      <span class="overlay-arrow">→</span>
+    </a>
+    <a href="case-study-museum-diary.html" class="overlay-link">
+      <span class="overlay-link-name">Museum Diary</span>
+      <span class="overlay-arrow">→</span>
+    </a>
+    <!-- <a href="about.html" class="overlay-link">
       <span class="overlay-link-name">About</span>
       <span class="overlay-arrow">→</span>
     </a> -->
   </div>
   <div class="overlay-contact">
-    <div class="overlay-contact-group">
-      <span class="overlay-contact-label">Email</span>
-      <a href="mailto:stephanielanzhou@gmail.com">stephanielanzhou@gmail.com</a>
-    </div>
-    <div class="overlay-contact-group">
-      <span class="overlay-contact-label">LinkedIn</span>
-      <a href="https://www.linkedin.com/in/stephanielanzhou/">linkedin.com/in/stephanielanzhou</a>
-    </div>
+    <a href="mailto:stephanielanzhou@gmail.com" class="overlay-contact-link">Email</a>
+    <a href="https://www.linkedin.com/in/stephanielanzhou/" class="overlay-contact-link">LinkedIn</a>
   </div>
 </div>
 
@@ -761,7 +776,7 @@
   </div>
 
   <!-- ════ 2024 ════ -->
-  <div class="year-banner" id="year-2024" data-animate>
+  <div class="year-banner" id="year-2024" data-animate data-bg="#141414">
     <span class="year-label">2024</span>
     <div class="year-rule"></div>
   </div>
@@ -816,16 +831,6 @@
     document.body.style.overflow = isOpen ? '' : 'hidden';
   });
 
-  /* work sub-menu toggle */
-  const workToggle = document.getElementById('work-toggle');
-  const workSub = document.getElementById('work-sub');
-  workToggle.addEventListener('click', () => {
-    const expanded = workToggle.getAttribute('aria-expanded') === 'true';
-    workToggle.setAttribute('aria-expanded', String(!expanded));
-    workToggle.classList.toggle('expanded', !expanded);
-    workSub.classList.toggle('open', !expanded);
-  });
-
   /* close overlay on nav link click */
   overlay.querySelectorAll('a.overlay-link').forEach(link => {
     link.addEventListener('click', () => {
@@ -835,6 +840,19 @@
       document.body.style.overflow = '';
     });
   });
+
+  /* background color shifts */
+  const bgSections = document.querySelectorAll('[data-bg]');
+  function updateBg() {
+    let bg = '#FFFFFF';
+    bgSections.forEach(s => {
+      if (s.getBoundingClientRect().top < window.innerHeight * 0.5) bg = s.dataset.bg;
+    });
+    document.body.style.backgroundColor = bg;
+    document.body.classList.toggle('dark-bg', bg === '#141414');
+  }
+  window.addEventListener('scroll', updateBg, { passive: true });
+  updateBg();
 
   /* TOC active state */
   const tocLinks = document.querySelectorAll('.toc-list a');
